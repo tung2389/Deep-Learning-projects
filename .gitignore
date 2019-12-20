@@ -1,0 +1,7 @@
+__pycache__/
+build/
+dist/
+hooks/
+tensorflow_core/
+Text.spec
+useSavedModel.spec

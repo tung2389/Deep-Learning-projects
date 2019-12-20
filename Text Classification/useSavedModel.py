@@ -3,6 +3,7 @@ from tensorflow import keras
 import numpy as np
 import os
 cwd = os.getcwd()
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 data = keras.datasets.imdb
 
@@ -55,7 +56,18 @@ def testModelWithRealData():
 			print(processedReview)
 			print(predict[0])
 
-testModelWithRealData()
+def runModel():
+	review = input("Enter a movie review: ")
+	processedReview = preprocessReview(review)
+	predict = model.predict(processedReview)
+	if predict < 0.4:
+		print("This is a very negative review")
+	elif 0.4 <= predict < 0.7:
+		print("This is a both negative and positive review")
+	else:
+		print("This is a very positive review")
+
+runModel()
 
 
 
