@@ -60,9 +60,9 @@ def runModel():
 	review = input("Enter a movie review: ")
 	processedReview = preprocessReview(review)
 	predict = model.predict(processedReview)
-	if predict < 0.4:
+	if predict <= 0.3:
 		print("This is a very negative review")
-	elif 0.4 <= predict < 0.7:
+	elif 0.3 < predict < 0.7:
 		print("This is a both negative and positive review")
 	else:
 		print("This is a very positive review")
