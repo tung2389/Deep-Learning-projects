@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import os
 
 config = ConfigProto()
-config.gpu_options.per_process_gpu_memory_fraction = 0.7
+config.gpu_options.per_process_gpu_memory_fraction = 0.71
 config.gpu_options.allow_growth = True
 session = InteractiveSession(config=config)
 
@@ -93,10 +93,10 @@ model = keras.models.Sequential([
   keras.layers.Conv2D(64, (3,3), activation='relu'),
   keras.layers.MaxPooling2D(2,2),
 
-  keras.layers.Conv2D(128, (3,3), activation='relu'),
+  keras.layers.Conv2D(64, (3,3), activation='relu'),
   keras.layers.MaxPooling2D(2,2),
 
-  keras.layers.Conv2D(256, (3,3), activation='relu'),
+  keras.layers.Conv2D(64, (3,3), activation='relu'),
   keras.layers.MaxPooling2D(2,2),
 
   keras.layers.Dropout(0.5),
