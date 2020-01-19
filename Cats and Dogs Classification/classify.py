@@ -4,22 +4,18 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import numpy as np 
 import matplotlib.pyplot as plt
 import os
-from tensorflow.compat.v1 import ConfigProto
-from tensorflow.compat.v1 import InteractiveSession
+import sys
+sys.path.append(os.getcwd())
+from utils.prepareGPU import prepareGPU
+
+
+session = prepareGPU()
 
 cwd = os.getcwd()
 
 _URL = 'https://storage.googleapis.com/mledu-datasets/cats_and_dogs_filtered.zip'
 
 zip_dir = keras.utils.get_file('cats_and_dogs_filterted.zip', origin=_URL, extract=True)
-
-from tensorflow.compat.v1 import ConfigProto
-from tensorflow.compat.v1 import InteractiveSession
-
-config = ConfigProto()
-config.gpu_options.per_process_gpu_memory_fraction = 0.7
-config.gpu_options.allow_growth = True
-session = InteractiveSession(config=config)
 
 base_dir = os.path.join(os.path.dirname(zip_dir), 'cats_and_dogs_filtered')
 train_dir = os.path.join(base_dir, 'train')

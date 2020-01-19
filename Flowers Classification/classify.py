@@ -8,11 +8,11 @@ import shutil
 import numpy as np 
 import matplotlib.pyplot as plt
 import os
+import sys
+sys.path.append(os.getcwd())
+from utils.prepareGPU import prepareGPU
 
-config = ConfigProto()
-config.gpu_options.per_process_gpu_memory_fraction = 0.71
-config.gpu_options.allow_growth = True
-session = InteractiveSession(config=config)
+session = prepareGPU()
 
 _URL = "https://storage.googleapis.com/download.tensorflow.org/example_images/flower_photos.tgz"
 
