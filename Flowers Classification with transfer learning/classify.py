@@ -6,9 +6,8 @@ import os
 import sys
 sys.path.append(os.getcwd())
 from utils.prepareGPU import prepareGPU
-from utils.prepareCatDogDataset import prepareDataset, prepareTraingAndValSet
-session = prepareGPU()
-train_dir, val_dir, total_train, total_val = prepareDataset()
+from utils.prepareFlowersDataset import returnImportantInfo, prepareTraingAndValSet
+train_dir, val_dir, total_train, total_val = returnImportantInfo()
 
 CLASSIFIER_URL ="https://tfhub.dev/google/tf2-preview/mobilenet_v2/classification/2"
 IMAGE_RES = 224
@@ -22,7 +21,7 @@ all_layers_except_the_last.trainable = False
 
 model = keras.Sequential([
     all_layers_except_the_last,
-    keras.layers.Dense(2, activation="softmax")
+    keras.layers.Dense(5, activation="softmax")
 ])
 
 model.summary()
@@ -44,4 +43,4 @@ with tf.device('/CPU:0'): #Cannot use GPU because the neural network is so big, 
       validation_steps=int(np.ceil(total_val / float(BATCH_SIZE)))
   )
 
-
+model.save(os.getcwd() + "/Flowers Classification with transfer learning/model.h5")
