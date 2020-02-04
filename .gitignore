@@ -6,3 +6,4 @@ tensorflow_core/
 Text.spec
 useSavedModel.spec
 .vscode/
+*.h5

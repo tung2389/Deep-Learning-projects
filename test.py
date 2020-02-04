@@ -1,15 +1,30 @@
-from __future__ import absolute_import, division, print_function, unicode_literals
+import numpy as np
+from tensorflow import keras
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import LSTM
 
-import tensorflow as tf
-import utils
+np.random.seed(0) 
 
-gpus = tf.config.experimental.list_physical_devices('GPU')
-if gpus:
-  # Restrict TensorFlow to only use the first GPU
-  try:
-    tf.config.experimental.set_visible_devices(gpus[0], 'GPU')
-    logical_gpus = tf.config.experimental.list_logical_devices('GPU')
-    print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPU")
-  except RuntimeError as e:
-    # Visible devices must be set before GPUs have been initialized
-    print(e)
+SLENG = 20 # sequence length
+# numpy array
+seq = np.arange(0, SLENG*SLENG, SLENG)
+print(seq)
+# 0  20  40  60  80 100 120 140 160 180 200 220 240 260 280 300 320 340 360 380
+
+# model needs X as input and y as ouptut shapes
+X = seq.reshape(1, SLENG, 1)
+y = seq.reshape(1, SLENG)
+
+# define LSTM configuration
+n_neurons = SLENG
+n_batch = 1
+n_epoch = 1500
+
+# create LSTM net
+model = Sequential()
+model.add(LSTM(n_neurons, activation="relu", input_shape=(SLENG, 1)))
+model.add(Dense(SLENG))
+model.compile(loss='mean_squared_error', optimizer='adam', metrics=['accuracy'])
+
+print(model.summary())
