@@ -1,30 +1,42 @@
-import numpy as np
-from tensorflow import keras
+from tensorflow.keras.preprocessing import sequence
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Dense, Embedding
 from tensorflow.keras.layers import LSTM
+from tensorflow.keras.datasets import imdb
 
-np.random.seed(0) 
+max_features = 20000
+# cut texts after this number of words (among top max_features most common words)
+maxlen = 80
+batch_size = 32
 
-SLENG = 20 # sequence length
-# numpy array
-seq = np.arange(0, SLENG*SLENG, SLENG)
-print(seq)
-# 0  20  40  60  80 100 120 140 160 180 200 220 240 260 280 300 320 340 360 380
+print('Loading data...')
+(x_train, y_train), (x_test, y_test) = imdb.load_data(num_words=max_features)
+print(len(x_train), 'train sequences')
+print(len(x_test), 'test sequences')
 
-# model needs X as input and y as ouptut shapes
-X = seq.reshape(1, SLENG, 1)
-y = seq.reshape(1, SLENG)
+print('Pad sequences (samples x time)')
+x_train = sequence.pad_sequences(x_train, maxlen=maxlen)
+x_test = sequence.pad_sequences(x_test, maxlen=maxlen)
+print('x_train shape:', x_train.shape)
+print('x_test shape:', x_test.shape)
 
-# define LSTM configuration
-n_neurons = SLENG
-n_batch = 1
-n_epoch = 1500
-
-# create LSTM net
+print('Build model...')
 model = Sequential()
-model.add(LSTM(n_neurons, activation="relu", input_shape=(SLENG, 1)))
-model.add(Dense(SLENG))
-model.compile(loss='mean_squared_error', optimizer='adam', metrics=['accuracy'])
+model.add(Embedding(max_features, 128))
+model.add(LSTM(128, dropout=0.2, recurrent_dropout=0.2))
+model.add(Dense(1, activation='sigmoid'))
 
-print(model.summary())
+# try using different optimizers and different optimizer configs
+model.compile(loss='binary_crossentropy',
+              optimizer='adam',
+              metrics=['accuracy'])
+
+print('Train...')
+model.fit(x_train, y_train,
+          batch_size=batch_size,
+          epochs=15,
+          validation_data=(x_test, y_test))
+score, acc = model.evaluate(x_test, y_test,
+                            batch_size=batch_size)
+print('Test score:', score)
+print('Test accuracy:', acc)

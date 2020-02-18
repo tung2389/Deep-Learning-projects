@@ -34,6 +34,7 @@ def encodeReview(review):
 	return encodedString
 
 model = keras.models.load_model(cwd + "/Text Classification/model.h5")
+LSTM_model = keras.models.load_model(cwd + '/Text Classification/LSTM model.h5')
 
 def preprocessReview(review):
 	conciseString = review
