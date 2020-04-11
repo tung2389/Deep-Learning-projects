@@ -3,3 +3,5 @@ My first experience with neural network:
 - Basic image classfication using Fashion MNIST datasets
 - Movie review classification (negative or positive)
 - Apply Convolutional Neural Network to improve Fasion MNIST model
+- Flowers classification
+- Cat and Dog classification
